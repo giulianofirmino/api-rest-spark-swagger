@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="true">
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-5p %x %c : %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="file-rolling" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="${profile.log.path}/app.log" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-5p %x %c : %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="async-file" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="500"/>
+		<appender-ref ref="file-rolling"/>
+	</appender>
+
+	<appender name="async-console" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="500"/>
+		<appender-ref ref="console"/>
+	</appender>
+
+	<root>
+		<level value="${profile.log.level}" />
+		<appender-ref ref="async-${profile.log.type}" />
+	</root>
+
+</configuration>
